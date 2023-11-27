@@ -3,20 +3,19 @@
 module matrix_3x3 (
     clk,
     rst_n,
-    valid_in,//čžĺĽć°ćŽććäżĄĺˇ
-    din,//čžĺĽçĺžĺć°ćŽďźĺ°ä¸ĺ¸§çć°ćŽäťĺˇŚĺ°ĺłďźçśĺäťä¸ĺ°ä¸äžćŹĄčžďż???
-    
-    dout_r0,//çŹŹä¸čĄçčžĺşć°ćŽ
-    dout_r1,//çŹŹäşčĄçčžĺşć°ćŽ
-    dout_r2,//çŹŹä¸čĄçčžĺşć°ćŽ
+    valid_in,
+    din,
+    dout_r0,
+    dout_r1,
+    dout_r2,
     corner_type,
     lastin_flag,
     out_en
 );
-parameter WIDTH = 8;//ć°ćŽä˝ĺŽ˝
+parameter           WIDTH = 8;
 parameter           COL_NUM     =   8    ;
 parameter           ROW_NUM     =   5    ;
-parameter LINE_NUM = 3;//čĄçźĺ­çčĄć°
+parameter           LINE_NUM = 3;
 
 input               clk;
 input               rst_n;
@@ -30,11 +29,11 @@ output[3:0]         corner_type;
 output reg          lastin_flag; // for the last input 0000000 of line0//
 output              out_en; //dout enable//
 
-reg   [WIDTH-1:0] line[2:0];//äżĺ­ćŻä¸Şline_bufferçčžĺĽć°ďż??
+reg   [WIDTH-1:0] line[2:0];//line_buffer
 reg   valid_in_r  [2:0];
-wire  [WIDTH-1:0] din_r; // ä¸ĺ°ďż??ĺä¸ćç´ćĽçťdinďźćĺä¸ćçť0
+wire  [WIDTH-1:0] din_r; // 
 wire  valid_out_r [2:0];
-wire  [WIDTH-1:0] dout_r[2:0];//äżĺ­ćŻä¸Şline_bufferçčžĺşć°ďż??
+wire  [WIDTH-1:0] dout_r[2:0];
 reg   corner_flag_lastline; // the last line for output//
 wire  out_en_r [2:0];
 
@@ -47,7 +46,7 @@ assign out_en  = out_en_r[1]; //control the real data_out//
 genvar i;
 generate
     begin:HDL1
-    // ĺć´ć°line1  ĺć1ççť2   2ççť3.....//
+    
     for (i = 0;i < LINE_NUM;i = i +1)
         begin : buffer_inst
             // line 0
@@ -57,18 +56,16 @@ generate
                     if (lastin_flag)
                     valid_in_r[i]   <=  1'b1 ;
                     else
-                    valid_in_r[i]   <=  valid_in ;//çŹŹä¸ä¸Şline_fifoçdinĺvalid_inçąéĄśĺąç´ćĽćďż??
+                    valid_in_r[i]   <=  valid_in ;
                 end
             end
             // line 1 2 ...
         
             else  begin: MAP1
                 always @(*) begin
-                	//ĺ°ä¸ďż???ä¸Şline_fifoçčžĺşčżćĽĺ°ä¸ä¸ä¸Şline_fifoçčžďż??
+
                     line[i] <= dout_r[i-1];
-                    //ĺ˝ä¸ďż??ä¸Şline_fifoĺĺĽ480ä¸Şć°ćŽäšĺćéŤrd_enďźčĄ¨ç¤şĺźĺ§čŻťĺşć°ćŽďź
-                    //valid_outĺrd_enĺć­Ľďźvalid_outčľçťä¸ä¸ä¸Şline_fifo
-                    //valid_in,čĄ¨ç¤şĺŻäťĽďż??ĺ§ĺĺĽäş
+
                     valid_in_r[i] <= valid_out_r[i-1];
                 end
             end
@@ -100,7 +97,7 @@ reg                 [10:0]  row_cnt         ;
 //
 
 
-//ĺŻšĺčŽĄć°//
+
 always @(posedge clk or negedge rst_n)
     if(rst_n == 1'b0)
         col_cnt             <=          11'd0;
@@ -113,7 +110,7 @@ always @(posedge clk or negedge rst_n)
     else
         col_cnt             <=          col_cnt;
 
-// ĺŻščĄčŽĄć°//
+
 always @(posedge clk or negedge rst_n)
     if(rst_n == 1'b0)
         row_cnt             <=          11'd0;
@@ -122,7 +119,7 @@ always @(posedge clk or negedge rst_n)
     else if(col_cnt == COL_NUM && valid_in == 1'b1) 
         row_cnt             <=          row_cnt + 1'b1;
 
-//čžšč§ćç¤ş//
+
 reg [3:0]   corner_type;
 reg [10:0]  lastcnt_in;
 reg [10:0]  lastcnt_out;
