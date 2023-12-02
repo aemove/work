@@ -85,17 +85,6 @@ generate
 endgenerate
 reg                 [10:0]  col_cnt         ;
 reg                 [10:0]  row_cnt         ;
-//
-//reg                     corner_flag_start         ;
-//reg                     corner_flag_leftline         ;
-//reg                     corner_flag_rigntline         ;
-//reg                     corner_flag_leftend         ;
-//reg                     corner_flag_rigntline         ;
-//reg                     corner_flag_rigntend         ;
-//reg                     total_cross;
-//reg                     corner_right_start;
-//
-
 
 
 always @(posedge clk or negedge rst_n)
@@ -185,25 +174,6 @@ else begin
      last_true  <=  corner_flag_lastline;
 end
 end
-
-// start  1
-// right start 2
-// the left beginning 3
-// the right boarder  4
-// the leftend        5
-// the rigntend       6
-// the lastline       7
-// total 3*3          8
-// others             0
-
-//    parameter         corner_flag_start     = 1;
-//    parameter         corner_right_start    = 2;
-//    parameter         corner_flag_leftline  = 3;
-//    parameter         corner_flag_rigntline = 4;
-//    parameter         corner_flag_leftend   = 5;
-//    parameter         corner_flag_rigntend  = 6;
-//    parameter         corner_flag_lastline  = 7;
-//    parameter         total_cross           = 8;   
 
 
 always@(*)begin
